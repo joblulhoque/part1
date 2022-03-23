@@ -1,27 +1,38 @@
 
 import {useState} from 'react';
 
+
+const Button = (props) => {
+  return(
+    <button onClick={props.handleClick}>{props.text}</button>
+  )
+}
+
+const StatisticsLine = (props) => {
+  return (
+    <div>
+      <p>{props.text} {props.value}{props.extra}</p>
+    </div>
+  )
+}
+
   const Statistics = (props) => {
-    const {good,neutral,bad,all,avg,allClicks} = props;
-    if(allClicks.length === 0){
+    if(props.allClicks.length === 0){
       return (
-        <div>
-          <h1>No feedback yet</h1>
-        </div>
+        <p>No feedback given.</p>
       )
-    } else {
+    }
     return (
       <div>
-      <h1>statistics</h1>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {all}</p>
-      <p>average {avg/all}</p>
-      <p>positive {good/all * 100}%</p>
+        <h1>Statistics</h1>
+        <StatisticsLine text="good" value={props.good}/>
+        <StatisticsLine text="neutral" value={props.neutral}/>
+        <StatisticsLine text="bad" value={props.bad}/>
+        <StatisticsLine text="all" value={props.all}/>
+        <StatisticsLine text="average" value={props.avg}/>
+        <StatisticsLine text="positive" value={props.positive} extra="%"/>
       </div>
     )
-    }
   }
 
 const App = () => {
@@ -32,6 +43,8 @@ const App = () => {
   const [allClicks,setAllClicks] = useState([]);
   const all = good+neutral+bad;
   const avg = good-bad;
+  const average = avg/all;
+  const positive = good/all*100;
   const goodHandler = () => {
     allClicks.push('G');
     setAllClicks(allClicks);
@@ -55,15 +68,16 @@ const App = () => {
   return (
     <div>
       <h1>Give feedback</h1>
-      <button onClick={goodHandler}>good</button>
-      <button onClick={neutralHandler}>neutral</button>
-      <button onClick={badHandler}>bad</button>
+      <Button text="good" handleClick={goodHandler}/> 
+      <Button text="neutral" handleClick={neutralHandler} />
+      <Button text="bad" handleClick={badHandler}/>
       <Statistics 
       good={good}
       neutral={neutral}
       bad={bad}
       all={all}
-      avg={avg}
+      avg={average}
+      positive={positive}
       allClicks={allClicks}/>
     </div>
   )
