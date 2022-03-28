@@ -18,6 +18,7 @@ const App = () => {
   const arr = Array(arrLength).fill(0);
   
   const [votes,setVotes] = useState(arr);
+  const ind = votes.indexOf(Math.max(...votes));
   const clickHandler = () => {
     setSelected(random)
   }
@@ -33,6 +34,7 @@ const App = () => {
     <div>
       <h1>{anecdotes[selected]}</h1>
       <h2>has {votes[selected]} votes </h2>
+      <p>{anecdotes[ind]} has {votes[ind]} votes</p>
       <button onClick={()=>voteHandler(selected)}>vote</button>
       <button onClick={clickHandler}>next anecdote</button>
     </div>
